@@ -21,3 +21,4 @@ const publicStaticDir = path.join(publicDir, 'static');
 fs.cpSync(staticDir, publicStaticDir, { recursive: true });
 
 console.log('Build berhasil! public/ terisi file HTML, CSS, JS, dan assets.');
+

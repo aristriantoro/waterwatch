@@ -95,21 +95,13 @@
     // Muat statistik dari dashboard (publik tidak ada endpoint publik, tampilkan placeholder)
     // Gunakan /api/v1/admin/dashboard hanya jika token ada
     async function loadStats() {
-      const token = api.getToken();
-      if (!token) {
-        document.getElementById('stats-row').innerHTML = `
-          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value">–</div><div class="ww-stat-label">Total Laporan</div></div></div>
-          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value">–</div><div class="ww-stat-label">Menunggu</div></div></div>
-          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value">–</div><div class="ww-stat-label">Selesai</div></div></div>`;
-        return;
-      }
       try {
         const d = await api.get('/admin/dashboard');
         document.getElementById('stats-row').innerHTML = `
           <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value">${d.total}</div><div class="ww-stat-label">Total Laporan</div></div></div>
-          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value">${d.per_status.menunggu}</div><div class="ww-stat-label">Menunggu</div></div></div>
-          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value">${d.per_status.diproses}</div><div class="ww-stat-label">Diproses</div></div></div>
-          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value">${d.per_status.selesai}</div><div class="ww-stat-label">Selesai</div></div></div>`;
+          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value" style="color:var(--ww-menunggu-text)">${d.per_status.menunggu}</div><div class="ww-stat-label">Menunggu</div></div></div>
+          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value" style="color:var(--ww-diproses-text)">${d.per_status.diproses}</div><div class="ww-stat-label">Diproses</div></div></div>
+          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-stat-value" style="color:var(--ww-selesai-text)">${d.per_status.selesai}</div><div class="ww-stat-label">Selesai</div></div></div>`;
       } catch {
         document.getElementById('stats-row').innerHTML = `<p class="text-center text-muted">Tidak dapat memuat statistik.</p>`;
       }
