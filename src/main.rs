@@ -58,16 +58,23 @@ async fn main() -> anyhow::Result<()> {
     tokio::fs::create_dir_all(&config.upload_dir).await?;
 
     // CORS
-    let allowed_origins: Vec<HeaderValue> = config
-        .allowed_origins
-        .split(',')
-        .filter_map(|s| s.trim().parse().ok())
-        .collect();
+    let cors = if config.allowed_origins.trim() == "*" {
+        CorsLayer::new()
+            .allow_origin(tower_http::cors::Any)
+            .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::OPTIONS])
+            .allow_headers(AllowHeaders::mirror_request())
+    } else {
+        let allowed_origins: Vec<HeaderValue> = config
+            .allowed_origins
+            .split(',')
+            .filter_map(|s| s.trim().parse().ok())
+            .collect();
 
-    let cors = CorsLayer::new()
-        .allow_origin(AllowOrigin::list(allowed_origins))
-        .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::OPTIONS])
-        .allow_headers(AllowHeaders::mirror_request());
+        CorsLayer::new()
+            .allow_origin(AllowOrigin::list(allowed_origins))
+            .allow_methods([Method::GET, Method::POST, Method::PATCH, Method::OPTIONS])
+            .allow_headers(AllowHeaders::mirror_request())
+    };
 
     // Header keamanan
     let security_headers = tower::ServiceBuilder::new()

@@ -48,8 +48,16 @@ fn default_rate_limit_burst() -> u32 { 5 }
 impl Config {
     pub fn from_env() -> anyhow::Result<Self> {
         dotenvy::dotenv().ok();
-        let cfg = envy::from_env::<Config>()
+        let mut cfg = envy::from_env::<Config>()
             .map_err(|e| anyhow::anyhow!("Konfigurasi tidak valid: {e}"))?;
+
+        // Dukungan PORT bawaan cloud hosting (Render, Railway, Fly.io, Heroku)
+        if let Ok(port_env) = std::env::var("PORT") {
+            if let Ok(p) = port_env.parse::<u16>() {
+                cfg.server_port = p;
+            }
+        }
+
         Ok(cfg)
     }
 }

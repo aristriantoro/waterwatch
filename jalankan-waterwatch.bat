@@ -44,3 +44,4 @@ echo Untuk mematikan aplikasi, jalankan stop-waterwatch.bat
 echo ========================================================
 echo.
 pause
+

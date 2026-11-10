@@ -19,3 +19,4 @@ echo    Aplikasi WaterWatch Berhasil Dimatikan.
 echo ========================================================
 echo.
 pause
+
