@@ -1,0 +1,480 @@
+{
+  "summary": {
+    "total": 52,
+    "passed": 52,
+    "failed": 0,
+    "rate": "100.0%",
+    "p95_ms": 27.15,
+    "avg_ms": 17.26
+  },
+  "results": [
+    {
+      "id": "API-01",
+      "category": "API Testing",
+      "name": "Pemeriksaan Endpoint Health Check",
+      "expected": "HTTP 200, status: ok",
+      "actual": "HTTP 200, body: {'status': 'ok', 'version': '0.1.0'}",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "SEC-01",
+      "category": "Security Testing",
+      "name": "Pemeriksaan Header Keamanan HTTP",
+      "expected": "x-content-type-options: nosniff, x-frame-options: DENY",
+      "actual": "x-content-type-options: nosniff, x-frame-options: DENY",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-01",
+      "category": "Functional Testing",
+      "name": "Registrasi Warga Baru Valid",
+      "expected": "HTTP 201, UserResponse dengan role masyarakat",
+      "actual": "HTTP 201, role: masyarakat",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-02",
+      "category": "Functional Testing",
+      "name": "Registrasi Email Duplikat",
+      "expected": "HTTP 409 CONFLICT",
+      "actual": "HTTP 409, code: CONFLICT",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-03",
+      "category": "Black Box Testing",
+      "name": "Registrasi Password Terlalu Pendek (< 8 kar)",
+      "expected": "HTTP 422 VALIDATION_ERROR",
+      "actual": "HTTP 422",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-04",
+      "category": "Black Box Testing",
+      "name": "Registrasi Format Email Tidak Valid",
+      "expected": "HTTP 422 VALIDATION_ERROR",
+      "actual": "HTTP 422",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-05",
+      "category": "Functional Testing",
+      "name": "Login Warga Kredensial Valid",
+      "expected": "HTTP 200, JWT token dikembalikan",
+      "actual": "HTTP 200, token_ada: True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-06",
+      "category": "Security Testing",
+      "name": "Login Password Salah (Pesan Generik)",
+      "expected": "HTTP 401 UNAUTHORIZED, pesan generik",
+      "actual": "HTTP 401, msg: 'Email atau password salah'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-07",
+      "category": "Security Testing",
+      "name": "Login Email Tidak Terdaftar (Pesan Sama)",
+      "expected": "HTTP 401 UNAUTHORIZED, pesan generik sama",
+      "actual": "HTTP 401",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-08",
+      "category": "Functional Testing",
+      "name": "Login Admin Utama Kredensial Valid",
+      "expected": "HTTP 200, role admin",
+      "actual": "HTTP 200, role: admin",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-09",
+      "category": "API Testing",
+      "name": "Verifikasi Profile Diri (/auth/me)",
+      "expected": "HTTP 200, data profil warga",
+      "actual": "HTTP 200, email: qa_warga_625481@example.com",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "AUTH-10",
+      "category": "Security Testing",
+      "name": "Akses Protected Endpoint Tanpa Token",
+      "expected": "HTTP 401 UNAUTHORIZED",
+      "actual": "HTTP 401",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "CAT-01",
+      "category": "Functional Testing",
+      "name": "Pengambilan Daftar Kategori Gangguan Air",
+      "expected": "HTTP 200, minimal 4 kategori standar",
+      "actual": "HTTP 200, jumlah: 4",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "REP-01",
+      "category": "Functional Testing",
+      "name": "Pembuatan Laporan Baru Valid",
+      "expected": "HTTP 201, nomor WW-YYYYMMDD-NNNN, status menunggu",
+      "actual": "HTTP 201, nomor: 'WW-20261110-0026', status: 'menunggu'",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "REP-02",
+      "category": "Functional Testing",
+      "name": "Pembuatan Laporan dengan Lampiran Foto PNG & Koordinat",
+      "expected": "HTTP 201 Created",
+      "actual": "HTTP 201, ID: af5c8916-f5dc-4c89-a726-c6a2ce7b19f7",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "REP-03",
+      "category": "API Testing",
+      "name": "Akses Berkas Foto Laporan (/reports/:id/foto)",
+      "expected": "HTTP 200, Content-Type image/png",
+      "actual": "HTTP 200, mime: image/png",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "SEC-02",
+      "category": "Security Testing",
+      "name": "Validasi Magic Bytes Foto Palsu (Anti-Spoofing)",
+      "expected": "HTTP 415 UNSUPPORTED_MEDIA_TYPE",
+      "actual": "HTTP 415, code: UNSUPPORTED_MEDIA_TYPE",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "BND-01",
+      "category": "Black Box Testing",
+      "name": "Validasi Batas Panjang Deskripsi (< 10 kar)",
+      "expected": "HTTP 422 VALIDATION_ERROR",
+      "actual": "HTTP 422",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "BND-02",
+      "category": "Black Box Testing",
+      "name": "Validasi Batas Koordinat Latitude (-90..90)",
+      "expected": "HTTP 422 VALIDATION_ERROR",
+      "actual": "HTTP 422",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "ACC-01",
+      "category": "Functional Testing",
+      "name": "Daftar Riwayat Laporan Milik Sendiri",
+      "expected": "HTTP 200, berisi laporan yang baru dibuat",
+      "actual": "HTTP 200, total_items: 2",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "ACC-02",
+      "category": "Functional Testing",
+      "name": "Detail Laporan Sendiri & Riwayat Perubahan",
+      "expected": "HTTP 200, memiliki array riwayat status",
+      "actual": "HTTP 200, riwayat_len: 1",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "SEC-03",
+      "category": "Security Testing",
+      "name": "Perlindungan Akses IDOR (Warga Lain -> Laporan Orang Lain)",
+      "expected": "HTTP 404 NOT FOUND (Bukan 403 untuk mencegah kebocoran ID)",
+      "actual": "HTTP 404",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "SEC-04",
+      "category": "Security Testing",
+      "name": "Warga Biasa Akses Endpoint Admin",
+      "expected": "HTTP 403 FORBIDDEN",
+      "actual": "HTTP 403",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "ADM-01",
+      "category": "Functional Testing",
+      "name": "Pengambilan Data Dashboard Admin",
+      "expected": "HTTP 200, total laporan > 0, rincian per status",
+      "actual": "HTTP 200, total: 133, has_status_counts: True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "ADM-02",
+      "category": "Functional Testing",
+      "name": "Filter Status Laporan Admin & JOIN User Nama",
+      "expected": "HTTP 200, semua status menunggu, memuat user_nama",
+      "actual": "HTTP 200, all_menunggu: True, has_user_nama: True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "ADM-03",
+      "category": "Functional Testing",
+      "name": "Admin Melihat Detail Laporan Lengkap Warga",
+      "expected": "HTTP 200, nama warga pembuat laporan tampil",
+      "actual": "HTTP 200, user_nama: QA Tester Warga",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "STA-01",
+      "category": "Functional Testing",
+      "name": "Transisi Status Valid (menunggu -> diproses)",
+      "expected": "HTTP 200, status diproses",
+      "actual": "HTTP 200, status: diproses",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "STA-02",
+      "category": "Black Box Testing",
+      "name": "Transisi Status Tidak Sah (Mundur: diproses -> menunggu)",
+      "expected": "HTTP 422 INVALID_TRANSITION",
+      "actual": "HTTP 422, code: INVALID_TRANSITION",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "STA-03",
+      "category": "Black Box Testing",
+      "name": "Ubah Status Tanpa Keterangan Tindakan",
+      "expected": "HTTP 422 VALIDATION_ERROR",
+      "actual": "HTTP 422",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "STA-04",
+      "category": "Functional Testing",
+      "name": "Transisi Status Valid (diproses -> selesai)",
+      "expected": "HTTP 200, status selesai",
+      "actual": "HTTP 200, status: selesai",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "STA-05",
+      "category": "Black Box Testing",
+      "name": "Integritas Status Selesai adalah Final",
+      "expected": "HTTP 422 INVALID_TRANSITION",
+      "actual": "HTTP 422, code: INVALID_TRANSITION",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "INT-01",
+      "category": "Integration Testing",
+      "name": "Integritas Lini Masa Audit Trail report_updates",
+      "expected": "Lini masa mencatat 3 fase (menunggu, diproses, selesai)",
+      "actual": "Jumlah riwayat: 3, status_akhir: selesai",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Landing Page redirect / login",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-login_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Login Publik",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-register_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Registrasi Publik",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-warga_buat-laporan_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Form Lapor Warga",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-warga_riwayat_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Riwayat Warga",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-warga_detail-laporan_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Detail Laporan Warga",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-warga_profil_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Profil Warga",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-admin_dashboard_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Dashboard Admin",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-admin_laporan_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Manajemen Laporan Admin",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-admin_detail-laporan_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Detail Laporan Admin",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-admin_profil_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Halaman Profil Admin",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-static_partials_footer_html",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Partial Footer Institusional",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-static_img_logo-pemda_png",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Logo Pemprov Lampung",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "UI-static_img_logo-uti_png",
+      "category": "Black Box Testing",
+      "name": "Akses Berkas Web: Logo Universitas Teknokrat Indonesia",
+      "expected": "HTTP 200 OK",
+      "actual": "HTTP 200",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "PRF-01",
+      "category": "Performance Testing",
+      "name": "Beban 50 Pengguna Bersamaan (AC-23 P95 <= 500ms)",
+      "expected": "P95 <= 500 ms",
+      "actual": "P95 = 27.15 ms, Rata-rata = 17.26 ms (50 request simultan)",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "SEC-05",
+      "category": "Security Testing",
+      "name": "Ketahanan Terhadap SQL Injection (Parameterized Query)",
+      "expected": "HTTP 201 tersimpan aman sebagai string literal, tabel tidak rusak/drop",
+      "actual": "HTTP 201, ID: 52763bf1-9600-44c1-a18a-603f67bfae64, Tabel Utuh: True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "DB-01",
+      "category": "Database Testing",
+      "name": "Penomoran Atomik Sequence (WW-YYYYMMDD-NNNN)",
+      "expected": "Nomor laporan berurutan secara konsisten (n dan n+1)",
+      "actual": "Nomor 1: WW-20261110-0029, Nomor 2: WW-20261110-0030, Berurutan: True",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "EDG-01",
+      "category": "Black Box Testing",
+      "name": "Lapor dengan ID Kategori Non-Eksisten (9999)",
+      "expected": "HTTP 422 VALIDATION_ERROR (Kategori tidak ditemukan)",
+      "actual": "HTTP 422, code: VALIDATION_ERROR",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "SEC-06",
+      "category": "Security Testing",
+      "name": "Warga Mencoba Memperbarui Status Laporan",
+      "expected": "HTTP 403 FORBIDDEN",
+      "actual": "HTTP 403",
+      "status": "PASS",
+      "details": ""
+    },
+    {
+      "id": "ADM-04",
+      "category": "Functional Testing",
+      "name": "Pencarian Kata Kunci Laporan pada Admin (/admin/reports?q=...)",
+      "expected": "HTTP 200, mengembalikan laporan yang relevan dengan kata kunci",
+      "actual": "HTTP 200, item_cocok: 2",
+      "status": "PASS",
+      "details": ""
+    }
+  ]
+}
