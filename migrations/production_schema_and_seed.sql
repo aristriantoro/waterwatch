@@ -109,3 +109,4 @@ INSERT INTO users (nama, email, password_hash, role) VALUES
     ('Dewi Lestari',    'warga4@example.com',  '$argon2id$v=19$m=19456,t=2,p=1$c/ESgx/SusvbYMiQ7z3biw$00f4ov1KsaEwU1YEj4t73dVqQTgJNaixxtjYlk6ysmM', 'masyarakat'),
     ('Hendra Gunawan',  'warga5@example.com',  '$argon2id$v=19$m=19456,t=2,p=1$c/ESgx/SusvbYMiQ7z3biw$00f4ov1KsaEwU1YEj4t73dVqQTgJNaixxtjYlk6ysmM', 'masyarakat')
 ON CONFLICT (email) DO NOTHING;
+
