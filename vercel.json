@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "echo 'Deploying static frontend'",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
@@ -25,4 +26,3 @@
     { "source": "/", "destination": "/static/index.html" }
   ]
 }
-

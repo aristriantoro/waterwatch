@@ -1,0 +1,14 @@
+# Ignore backend & Rust files on Vercel frontend deployment
+Cargo.toml
+Cargo.lock
+src/
+tests/
+target/
+migrations/
+nginx/
+Dockerfile
+docker-compose.yml
+qa_test_suite.py
+qa_test_report_data.json
+*.bat
+*.docx
