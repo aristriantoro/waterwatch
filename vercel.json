@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "node build.js",
   "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false,
@@ -15,6 +16,16 @@
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://BACKEND_URL_PLACEHOLDER/api/$1" },
-    { "source": "/health", "destination": "https://BACKEND_URL_PLACEHOLDER/health" }
+    { "source": "/health", "destination": "https://BACKEND_URL_PLACEHOLDER/health" },
+    { "source": "/login", "destination": "/login.html" },
+    { "source": "/register", "destination": "/register.html" },
+    { "source": "/admin/dashboard", "destination": "/admin/dashboard.html" },
+    { "source": "/admin/laporan", "destination": "/admin/laporan.html" },
+    { "source": "/admin/detail-laporan", "destination": "/admin/detail-laporan.html" },
+    { "source": "/admin/profil", "destination": "/admin/profil.html" },
+    { "source": "/warga/riwayat", "destination": "/warga/riwayat.html" },
+    { "source": "/warga/buat-laporan", "destination": "/warga/buat-laporan.html" },
+    { "source": "/warga/detail-laporan", "destination": "/warga/detail-laporan.html" },
+    { "source": "/warga/profil", "destination": "/warga/profil.html" }
   ]
 }

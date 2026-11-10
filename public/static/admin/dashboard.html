@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WaterWatch – Dashboard Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+  <link rel="stylesheet" href="/static/css/tokens.css"/>
+  <link rel="stylesheet" href="/static/css/app.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body style="background:var(--ww-bg)">
+
+  <!-- Shell Admin: Sidebar + Main -->
+  <div class="d-flex">
+    <!-- Sidebar desktop -->
+    <aside class="ww-sidebar d-none d-md-flex flex-column">
+      <div class="ww-sidebar-brand">
+        <span class="material-symbols-outlined align-middle me-1">water_drop</span>WaterWatch
+        <div class="small text-muted fw-normal mt-1" style="font-size:.7rem">Admin Panel</div>
+      </div>
+      <nav class="ww-sidebar-nav">
+        <a href="/admin/dashboard.html" class="ww-sidebar-link active">
+          <span class="material-symbols-outlined">dashboard</span>Dashboard
+        </a>
+        <a href="/admin/laporan.html" class="ww-sidebar-link">
+          <span class="material-symbols-outlined">list_alt</span>Laporan Masuk
+        </a>
+        <a href="/admin/profil.html" class="ww-sidebar-link">
+          <span class="material-symbols-outlined">person</span>Profil
+        </a>
+      </nav>
+      <div class="p-3 border-top">
+        <button class="btn btn-outline-danger btn-sm w-100" id="logout-btn">
+          <span class="material-symbols-outlined align-middle me-1">logout</span>Keluar
+        </button>
+      </div>
+    </aside>
+
+    <!-- Konten utama -->
+    <div class="ww-main-with-sidebar flex-grow-1 d-flex flex-column">
+
+      <!-- Top bar -->
+      <nav class="navbar bg-white border-bottom px-3">
+        <span class="navbar-brand fw-semibold mb-0 d-md-none" style="color:var(--ww-primary)">
+          <span class="material-symbols-outlined align-middle me-1">water_drop</span>WaterWatch
+        </span>
+        <span class="ms-auto text-muted small" id="admin-name"></span>
+      </nav>
+
+      <main class="p-3 p-md-4 flex-grow-1">
+        <h4 class="fw-bold mb-4">Dashboard</h4>
+
+        <!-- Kartu statistik -->
+        <div class="row g-3 mb-4" id="stat-cards">
+          <!-- Skeleton -->
+          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-skeleton mb-2" style="height:40px"></div><div class="ww-skeleton" style="height:14px"></div></div></div>
+          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-skeleton mb-2" style="height:40px"></div><div class="ww-skeleton" style="height:14px"></div></div></div>
+          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-skeleton mb-2" style="height:40px"></div><div class="ww-skeleton" style="height:14px"></div></div></div>
+          <div class="col-6 col-md-3"><div class="ww-stat-card"><div class="ww-skeleton mb-2" style="height:40px"></div><div class="ww-skeleton" style="height:14px"></div></div></div>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <!-- Grafik kategori -->
+          <div class="col-md-5">
+            <div class="ww-card h-100">
+              <h6 class="fw-semibold mb-3">Laporan per Kategori</h6>
+              <div style="max-height:220px"><canvas id="chart-kategori"></canvas></div>
+            </div>
+          </div>
+          <!-- Kartu hari ini -->
+          <div class="col-md-7">
+            <div class="ww-card h-100">
+              <h6 class="fw-semibold mb-3">Laporan Hari Ini</h6>
+              <div class="display-4 fw-bold" style="color:var(--ww-primary)" id="hari-ini-val">–</div>
+              <p class="text-muted small mb-0">laporan masuk hari ini</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10 Laporan terbaru -->
+        <div class="ww-card">
+          <h6 class="fw-semibold mb-3">10 Laporan Terbaru</h6>
+          <div id="latest-banner"></div>
+          <div id="latest-content">
+            <div class="placeholder-glow"><div class="placeholder col-12 rounded mb-2" style="height:48px"></div><div class="placeholder col-12 rounded" style="height:48px"></div></div>
+          </div>
+        </div>
+      </main>
+
+      <div id="ww-footer-container"></div>
+    </div>
+  </div>
+
+  <!-- Bottom nav mobile admin -->
+  <nav class="ww-bottom-nav d-md-none fixed-bottom">
+    <div class="d-flex justify-content-around align-items-center h-100 px-2">
+      <a href="/admin/dashboard.html" class="ww-nav-item active">
+        <span class="material-symbols-outlined">dashboard</span><small>Dashboard</small>
+      </a>
+      <a href="/admin/laporan.html" class="ww-nav-item">
+        <span class="material-symbols-outlined">list_alt</span><small>Laporan</small>
+      </a>
+      <a href="/admin/profil.html" class="ww-nav-item">
+        <span class="material-symbols-outlined">person</span><small>Profil</small>
+      </a>
+    </div>
+  </nav>
+
+  <div class="toast align-items-center border-0 position-fixed bottom-0 end-0 m-3" role="alert" id="app-toast" style="z-index:9999">
+    <div class="d-flex"><div class="toast-body"><span id="toast-message"></span></div>
+    <button class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Tutup"></button></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/guard.js"></script>
+  <script src="/static/js/layout.js"></script>
+  <script>
+    guard.requireAuth('admin');
+    const user = api.getUser();
+    if (user) document.getElementById('admin-name').textContent = user.nama;
+
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+      api.clearSession(); window.location.href = '/';
+    });
+
+    async function loadDashboard() {
+      try {
+        const d = await api.get('/admin/dashboard');
+
+        // Stat cards
+        document.getElementById('stat-cards').innerHTML = `
+          <div class="col-6 col-md-3"><div class="ww-stat-card">
+            <div class="ww-stat-value">${d.total}</div>
+            <div class="ww-stat-label">Total Laporan</div>
+          </div></div>
+          <div class="col-6 col-md-3"><div class="ww-stat-card">
+            <div class="ww-stat-value" style="color:var(--ww-menunggu-text)">${d.per_status.menunggu}</div>
+            <div class="ww-stat-label">Menunggu</div>
+          </div></div>
+          <div class="col-6 col-md-3"><div class="ww-stat-card">
+            <div class="ww-stat-value" style="color:var(--ww-diproses-text)">${d.per_status.diproses}</div>
+            <div class="ww-stat-label">Diproses</div>
+          </div></div>
+          <div class="col-6 col-md-3"><div class="ww-stat-card">
+            <div class="ww-stat-value" style="color:var(--ww-selesai-text)">${d.per_status.selesai}</div>
+            <div class="ww-stat-label">Selesai</div>
+          </div></div>`;
+
+        // Hari ini
+        document.getElementById('hari-ini-val').textContent = d.hari_ini;
+
+        // Grafik kategori
+        const labels  = d.per_kategori.map(c => c.kategori);
+        const values  = d.per_kategori.map(c => c.jumlah);
+        const colors  = ['#0369A1','#0EA5E9','#38BDF8','#7DD3FC'];
+        new Chart(document.getElementById('chart-kategori'), {
+          type: 'doughnut',
+          data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 2 }] },
+          options: {
+            responsive: true, maintainAspectRatio: true,
+            plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+          }
+        });
+
+        // Laporan terbaru
+        if (!d.laporan_terbaru.length) {
+          document.getElementById('latest-content').innerHTML = `
+            <div class="text-center py-4 text-muted">
+              <span class="material-symbols-outlined d-block mb-1" style="font-size:2.5rem">inbox</span>
+              <p class="mb-0 small">Belum ada laporan</p>
+            </div>`;
+          return;
+        }
+        document.getElementById('latest-content').innerHTML = `
+          <div class="table-responsive d-none d-md-block">
+            <table class="table table-hover table-sm align-middle mb-0">
+              <thead class="table-light"><tr>
+                <th>Nomor</th><th>Pelapor</th><th>Kategori</th><th>Status</th><th>Tanggal</th><th></th>
+              </tr></thead>
+              <tbody>${d.laporan_terbaru.map(r => `<tr>
+                <td class="fw-medium small">${utils.escapeHtml(r.nomor)}</td>
+                <td class="small">${utils.escapeHtml(r.user_nama)}</td>
+                <td class="small">${utils.escapeHtml(r.kategori)}</td>
+                <td>${utils.statusBadgeHtml(r.status)}</td>
+                <td class="small text-muted">${utils.formatDateShort(r.created_at)}</td>
+                <td><a href="/admin/detail-laporan.html?id=${encodeURIComponent(r.id)}" class="btn btn-sm btn-outline-primary">Detail</a></td>
+              </tr>`).join('')}</tbody>
+            </table>
+          </div>
+          <div class="d-md-none">
+            ${d.laporan_terbaru.map(r => `
+              <div class="ww-report-card">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div>
+                    <div class="ww-report-card-title">${utils.escapeHtml(r.nomor)}</div>
+                    <div class="ww-report-card-meta">${utils.escapeHtml(r.user_nama)} &bull; ${utils.escapeHtml(r.kategori)}</div>
+                  </div>
+                  ${utils.statusBadgeHtml(r.status)}
+                </div>
+                <div class="text-muted small mb-2">${utils.formatDateShort(r.created_at)}</div>
+                <a href="/admin/detail-laporan.html?id=${encodeURIComponent(r.id)}" class="btn btn-outline-primary btn-sm w-100">Detail</a>
+              </div>`).join('')}
+          </div>`;
+      } catch (err) {
+        utils.showBanner('latest-banner', err?.error?.message || 'Gagal memuat dashboard.');
+        document.getElementById('latest-content').innerHTML = '';
+      }
+    }
+
+    loadDashboard();
+  </script>
+</body>
+</html>
+

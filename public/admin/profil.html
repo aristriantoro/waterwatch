@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil Admin – WaterWatch</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="/static/css/tokens.css" />
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Sidebar Desktop -->
+  <div class="d-none d-md-flex flex-column admin-sidebar position-fixed top-0 start-0 h-100 bg-white border-end" style="width:256px;z-index:100;">
+    <div class="p-4 border-bottom">
+      <div class="d-flex align-items-center gap-2">
+        <span class="material-symbols-outlined text-primary fs-4">water_drop</span>
+        <span class="fw-bold fs-5 text-primary">WaterWatch</span>
+      </div>
+      <div class="text-muted small mt-1">Panel Admin</div>
+    </div>
+    <nav class="p-3 flex-grow-1">
+      <a href="/admin/dashboard.html" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded mb-1 text-secondary">
+        <span class="material-symbols-outlined">dashboard</span> Dashboard
+      </a>
+      <a href="/admin/laporan.html" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded mb-1 text-secondary">
+        <span class="material-symbols-outlined">assignment</span> Laporan
+      </a>
+      <a href="/admin/profil.html" class="nav-link d-flex align-items-center gap-2 px-3 py-2 rounded mb-1 active bg-primary-subtle text-primary fw-semibold">
+        <span class="material-symbols-outlined">person</span> Profil
+      </a>
+    </nav>
+    <div class="p-3 border-top">
+      <button id="btn-logout-side" class="btn btn-outline-danger w-100 d-flex align-items-center gap-2 justify-content-center">
+        <span class="material-symbols-outlined">logout</span> Keluar
+      </button>
+    </div>
+  </div>
+
+  <!-- Konten Utama -->
+  <div class="flex-grow-1" style="margin-left:0;" id="main-content">
+    <!-- Topbar Mobile -->
+    <header class="d-md-none bg-white border-bottom px-3 py-2 d-flex align-items-center gap-2 sticky-top">
+      <span class="material-symbols-outlined text-primary">water_drop</span>
+      <span class="fw-bold text-primary flex-grow-1">WaterWatch</span>
+      <span class="badge bg-primary-subtle text-primary">Admin</span>
+    </header>
+
+    <!-- Topbar Desktop -->
+    <header class="d-none d-md-flex bg-white border-bottom px-4 py-3 align-items-center" style="margin-left:256px;">
+      <span class="fw-semibold fs-5">Profil</span>
+      <div class="ms-auto d-flex align-items-center gap-3">
+        <span id="admin-nama-top" class="text-muted small"></span>
+        <button id="btn-logout-top" class="btn btn-sm btn-outline-danger">Keluar</button>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="p-3 p-md-4" style="margin-left:0;" id="page-main">
+
+      <!-- Loading skeleton -->
+      <div id="state-loading">
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <div class="skeleton rounded mb-3" style="height:24px;width:40%;"></div>
+            <div class="skeleton rounded mb-2" style="height:16px;width:70%;"></div>
+            <div class="skeleton rounded mb-2" style="height:16px;width:50%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error state -->
+      <div id="state-error" class="d-none">
+        <div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+          <span class="material-symbols-outlined">error</span>
+          <span id="error-msg">Terjadi kesalahan saat memuat profil.</span>
+        </div>
+      </div>
+
+      <!-- Konten Profil -->
+      <div id="state-content" class="d-none">
+        <div class="row g-4" style="max-width:640px;">
+          <!-- Info Profil -->
+          <div class="col-12">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                  <div class="bg-primary-subtle rounded-circle d-flex align-items-center justify-content-center" style="width:64px;height:64px;">
+                    <span class="material-symbols-outlined text-primary fs-2">admin_panel_settings</span>
+                  </div>
+                  <div>
+                    <h5 class="mb-0 fw-bold" id="profil-nama">-</h5>
+                    <span class="badge bg-primary mt-1">Admin</span>
+                  </div>
+                </div>
+
+                <dl class="row mb-0">
+                  <dt class="col-sm-4 text-muted fw-normal">Email</dt>
+                  <dd class="col-sm-8 fw-semibold" id="profil-email">-</dd>
+
+                  <dt class="col-sm-4 text-muted fw-normal">Peran</dt>
+                  <dd class="col-sm-8 fw-semibold">Administrator</dd>
+
+                  <dt class="col-sm-4 text-muted fw-normal">Bergabung</dt>
+                  <dd class="col-sm-8 fw-semibold" id="profil-bergabung">-</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ganti Password (placeholder, deferred ke Fase 2) -->
+          <div class="col-12">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body p-4">
+                <h6 class="fw-semibold mb-3 d-flex align-items-center gap-2">
+                  <span class="material-symbols-outlined text-muted fs-5">lock</span>
+                  Keamanan Akun
+                </h6>
+                <p class="text-muted small mb-0">Fitur ganti password akan tersedia di versi berikutnya.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Logout -->
+          <div class="col-12">
+            <button id="btn-logout-main" class="btn btn-danger d-flex align-items-center gap-2">
+              <span class="material-symbols-outlined">logout</span>
+              Keluar dari Akun
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Footer -->
+    <div id="ww-footer-container"></div>
+  </div>
+
+  <!-- Bottom Nav Mobile -->
+  <nav class="d-md-none fixed-bottom bg-white border-top" style="z-index:99;">
+    <div class="d-flex justify-content-around py-1">
+      <a href="/admin/dashboard.html" class="nav-link text-center px-3 py-2 text-secondary">
+        <span class="material-symbols-outlined d-block">dashboard</span>
+        <small>Dashboard</small>
+      </a>
+      <a href="/admin/laporan.html" class="nav-link text-center px-3 py-2 text-secondary">
+        <span class="material-symbols-outlined d-block">assignment</span>
+        <small>Laporan</small>
+      </a>
+      <a href="/admin/profil.html" class="nav-link text-center px-3 py-2 text-primary active">
+        <span class="material-symbols-outlined d-block">person</span>
+        <small>Profil</small>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Toast -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999;">
+    <div id="app-toast" class="toast align-items-center border-0" role="alert" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toast-message"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Tutup"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/js/utils.js"></script>
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/guard.js"></script>
+  <script src="/static/js/layout.js"></script>
+  <script>
+    // Hanya admin yang boleh akses
+    requireAdmin();
+
+    // Sesuaikan margin konten untuk sidebar desktop
+    document.getElementById('page-main').style.marginLeft = window.innerWidth >= 768 ? '256px' : '0';
+    window.addEventListener('resize', () => {
+      document.getElementById('page-main').style.marginLeft = window.innerWidth >= 768 ? '256px' : '0';
+    });
+
+    async function loadProfil() {
+      showState('loading');
+      try {
+        const data = await api.get('/api/v1/auth/me');
+        const user = data.data ?? data;
+
+        setTextSafe('profil-nama', user.nama);
+        setTextSafe('profil-email', user.email);
+        setTextSafe('profil-bergabung', user.created_at ? formatTanggal(user.created_at) : '-');
+        setTextSafe('admin-nama-top', user.nama);
+
+        showState('content');
+      } catch (err) {
+        document.getElementById('error-msg').textContent = err.message || 'Gagal memuat profil.';
+        showState('error');
+      }
+    }
+
+    function showState(s) {
+      document.getElementById('state-loading').classList.toggle('d-none', s !== 'loading');
+      document.getElementById('state-error').classList.toggle('d-none', s !== 'error');
+      document.getElementById('state-content').classList.toggle('d-none', s !== 'content');
+    }
+
+    function handleLogout() {
+      localStorage.removeItem('ww_token');
+      localStorage.removeItem('ww_user');
+      showToast('Berhasil keluar.', 'success');
+      setTimeout(() => { window.location.href = '/login.html'; }, 800);
+    }
+
+    document.getElementById('btn-logout-side')?.addEventListener('click', handleLogout);
+    document.getElementById('btn-logout-top')?.addEventListener('click', handleLogout);
+    document.getElementById('btn-logout-main')?.addEventListener('click', handleLogout);
+
+    loadProfil();
+  </script>
+</body>
+</html>
+

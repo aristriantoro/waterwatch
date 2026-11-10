@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WaterWatch – Detail Laporan Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"/>
+  <link rel="stylesheet" href="/static/css/tokens.css"/>
+  <link rel="stylesheet" href="/static/css/app.css"/>
+</head>
+<body style="background:var(--ww-bg)">
+
+<div class="d-flex">
+  <aside class="ww-sidebar d-none d-md-flex flex-column">
+    <div class="ww-sidebar-brand">
+      <span class="material-symbols-outlined align-middle me-1">water_drop</span>WaterWatch
+      <div class="small text-muted fw-normal mt-1" style="font-size:.7rem">Admin Panel</div>
+    </div>
+    <nav class="ww-sidebar-nav">
+      <a href="/admin/dashboard.html" class="ww-sidebar-link"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+      <a href="/admin/laporan.html"   class="ww-sidebar-link active"><span class="material-symbols-outlined">list_alt</span>Laporan Masuk</a>
+      <a href="/admin/profil.html"    class="ww-sidebar-link"><span class="material-symbols-outlined">person</span>Profil</a>
+    </nav>
+    <div class="p-3 border-top">
+      <button class="btn btn-outline-danger btn-sm w-100" id="logout-btn">
+        <span class="material-symbols-outlined align-middle me-1">logout</span>Keluar
+      </button>
+    </div>
+  </aside>
+
+  <div class="ww-main-with-sidebar flex-grow-1 d-flex flex-column">
+    <nav class="navbar bg-white border-bottom px-3">
+      <a href="/admin/laporan.html" class="btn btn-sm btn-outline-secondary">
+        <span class="material-symbols-outlined align-middle" style="font-size:1rem">arrow_back</span> Kembali
+      </a>
+      <span class="navbar-brand fw-semibold mb-0 mx-3">Detail Laporan</span>
+      <span class="ms-auto text-muted small" id="admin-name"></span>
+    </nav>
+
+    <main class="p-3 p-md-4 flex-grow-1">
+      <div id="error-banner"></div>
+      <div id="content">
+        <div class="placeholder-glow">
+          <div class="placeholder col-6 mb-3 rounded" style="height:28px"></div>
+          <div class="placeholder col-12 mb-2 rounded" style="height:16px"></div>
+          <div class="placeholder col-8 mb-4 rounded" style="height:16px"></div>
+          <div class="placeholder col-12 rounded" style="height:200px"></div>
+        </div>
+      </div>
+    </main>
+
+    <div id="ww-footer-container"></div>
+  </div>
+</div>
+
+<!-- Modal Konfirmasi Ubah Status -->
+<div class="modal fade" id="confirm-modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Konfirmasi Perubahan Status</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <p>Ubah status laporan <strong id="modal-nomor"></strong> menjadi <strong id="modal-status-label"></strong>?</p>
+        <div class="mb-3">
+          <label for="keterangan-input" class="form-label fw-medium">
+            Keterangan <span class="text-danger">*</span>
+          </label>
+          <textarea class="form-control" id="keterangan-input" rows="3"
+                    placeholder="Jelaskan tindakan yang diambil..." required></textarea>
+          <div class="text-danger small mt-1 d-none" id="ket-err">Keterangan wajib diisi.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-primary" id="confirm-btn">
+          <span id="confirm-btn-text">Simpan</span>
+          <span id="confirm-spinner" class="spinner-border spinner-border-sm d-none ms-1" role="status"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast align-items-center text-bg-success border-0 position-fixed bottom-0 end-0 m-3" role="alert" id="app-toast" style="z-index:9999">
+  <div class="d-flex">
+    <div class="toast-body"><span class="material-symbols-outlined align-middle me-1">check_circle</span><span id="toast-message"></span></div>
+    <button class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Tutup"></button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/static/js/utils.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/guard.js"></script>
+<script src="/static/js/layout.js"></script>
+<script>
+  guard.requireAuth('admin');
+  const user = api.getUser();
+  if (user) document.getElementById('admin-name').textContent = user.nama;
+  document.getElementById('logout-btn')?.addEventListener('click', () => { api.clearSession(); location.href='/'; });
+
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) location.href = '/admin/laporan.html';
+
+  let reportData = null;
+  let pendingStatus = null;
+
+  // Transisi valid sesuai aturan PRD: menunggu→diproses, diproses→selesai
+  const NEXT_STATUS = { menunggu: 'diproses', diproses: 'selesai' };
+  const STATUS_LABEL = { menunggu: 'Menunggu', diproses: 'Diproses', selesai: 'Selesai' };
+
+  async function loadDetail() {
+    try {
+      const r = await api.get(`/admin/reports/${encodeURIComponent(id)}`);
+      reportData = r;
+      renderDetail(r);
+    } catch (err) {
+      utils.showBanner('error-banner', err?.error?.message || 'Laporan tidak ditemukan.');
+      document.getElementById('content').innerHTML = '';
+    }
+  }
+
+  function renderDetail(r) {
+    const fotoHtml = r.foto
+      ? `<img src="/api/v1/reports/${encodeURIComponent(r.id)}/foto" alt="Foto bukti laporan"
+             class="img-fluid rounded mb-3 w-100" style="max-height:350px;object-fit:cover"
+             onerror="this.closest('.foto-wrapper').style.display='none'">`
+      : '';
+
+    const koordinatHtml = (r.latitude != null && r.longitude != null)
+      ? `<div class="mb-1 small text-muted">
+           <span class="material-symbols-outlined align-middle me-1" style="font-size:1rem">my_location</span>
+           ${r.latitude}, ${r.longitude}
+         </div>`
+      : '';
+
+    const riwayatHtml = r.riwayat.map(u => `
+      <div class="ww-timeline-item">
+        <div class="ww-timeline-dot"></div>
+        <div class="ww-timeline-content">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
+            ${utils.statusBadgeHtml(u.status)}
+            <span class="ww-timeline-time">${utils.formatDate(u.updated_at)}</span>
+          </div>
+          ${u.keterangan ? `<p class="mb-1 small">${utils.escapeHtml(u.keterangan)}</p>` : ''}
+          ${u.updated_by_nama ? `<small class="text-muted">oleh ${utils.escapeHtml(u.updated_by_nama)}</small>` : '<small class="text-muted">sistem</small>'}
+        </div>
+      </div>`).join('');
+
+    // Panel ubah status (hanya jika bukan selesai)
+    const nextStatus = NEXT_STATUS[r.status];
+    const updatePanelHtml = nextStatus ? `
+      <div class="ww-card mt-3">
+        <h6 class="fw-semibold mb-3">Ubah Status Laporan</h6>
+        <p class="small text-muted mb-3">
+          Status saat ini: ${utils.statusBadgeHtml(r.status)}
+          <span class="mx-2">→</span>
+          ${utils.statusBadgeHtml(nextStatus)}
+        </p>
+        <button class="btn btn-primary" id="ubah-status-btn" data-next="${nextStatus}">
+          <span class="material-symbols-outlined align-middle me-1">edit</span>
+          Ubah ke ${STATUS_LABEL[nextStatus]}
+        </button>
+      </div>` : `
+      <div class="alert alert-success d-flex align-items-center gap-2 mt-3">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span>Laporan ini sudah selesai dan tidak dapat diubah statusnya.</span>
+      </div>`;
+
+    document.getElementById('content').innerHTML = `
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <div class="ww-card mb-3">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div>
+                <div class="fw-bold fs-5 mb-1" id="detail-nomor"></div>
+                <div class="text-muted small" id="detail-kategori"></div>
+              </div>
+              <div id="detail-status-badge"></div>
+            </div>
+            ${r.foto ? `<div class="foto-wrapper">${fotoHtml}</div>` : ''}
+            <h6 class="fw-semibold mb-1 mt-2">Pelapor</h6>
+            <p class="mb-3" id="detail-pelapor"></p>
+            <h6 class="fw-semibold mb-1">Deskripsi</h6>
+            <p class="mb-3" id="detail-deskripsi"></p>
+            <h6 class="fw-semibold mb-1">Lokasi</h6>
+            <div class="mb-1 small" id="detail-lokasi-wrap">
+              <span class="material-symbols-outlined align-middle me-1" style="font-size:1rem">location_on</span>
+              <span id="detail-lokasi"></span>
+            </div>
+            ${r.wilayah ? `<div class="text-muted small mb-1" id="detail-wilayah"></div>` : ''}
+            ${koordinatHtml}
+            <div class="text-muted small mt-2">Dilaporkan: <span id="detail-tanggal"></span></div>
+          </div>
+          ${updatePanelHtml}
+        </div>
+        <div class="col-lg-4">
+          <div class="ww-card">
+            <h6 class="fw-semibold mb-3">Riwayat Status</h6>
+            <div class="ww-timeline">${riwayatHtml}</div>
+          </div>
+        </div>
+      </div>`;
+
+    // Set via textContent untuk keamanan XSS
+    document.getElementById('detail-nomor').textContent    = r.nomor;
+    document.getElementById('detail-kategori').textContent = r.kategori;
+    document.getElementById('detail-status-badge').innerHTML = utils.statusBadgeHtml(r.status); // konstanta sistem
+    document.getElementById('detail-pelapor').textContent  = r.user_nama || '–';
+    document.getElementById('detail-deskripsi').textContent = r.deskripsi;
+    document.getElementById('detail-lokasi').textContent   = r.lokasi;
+    if (r.wilayah) {
+      const el = document.getElementById('detail-wilayah');
+      if (el) el.textContent = r.wilayah;
+    }
+    document.getElementById('detail-tanggal').textContent  = utils.formatDate(r.created_at);
+
+    // Tombol ubah status
+    document.getElementById('ubah-status-btn')?.addEventListener('click', function() {
+      pendingStatus = this.dataset.next;
+      document.getElementById('modal-nomor').textContent = r.nomor;
+      document.getElementById('modal-status-label').textContent = STATUS_LABEL[pendingStatus];
+      document.getElementById('keterangan-input').value = '';
+      document.getElementById('ket-err').classList.add('d-none');
+      new bootstrap.Modal(document.getElementById('confirm-modal')).show();
+    });
+  }
+
+  // Konfirmasi ubah status
+  document.getElementById('confirm-btn').addEventListener('click', async () => {
+    const ket = document.getElementById('keterangan-input').value.trim();
+    if (!ket) {
+      document.getElementById('ket-err').classList.remove('d-none');
+      return;
+    }
+    document.getElementById('ket-err').classList.add('d-none');
+
+    const btn     = document.getElementById('confirm-btn');
+    const spinner = document.getElementById('confirm-spinner');
+    const text    = document.getElementById('confirm-btn-text');
+    btn.disabled  = true;
+    spinner.classList.remove('d-none');
+    text.textContent = 'Menyimpan...';
+
+    try {
+      await api.patch(`/admin/reports/${encodeURIComponent(id)}/status`, {
+        status: pendingStatus,
+        keterangan: ket,
+      });
+      bootstrap.Modal.getInstance(document.getElementById('confirm-modal')).hide();
+      utils.showToast('Status laporan berhasil diubah.');
+      // Reload halaman untuk tampilkan status terbaru
+      setTimeout(() => loadDetail(), 500);
+    } catch (err) {
+      const msg = err?.error?.message || 'Gagal mengubah status.';
+      utils.showBanner('error-banner', msg);
+      bootstrap.Modal.getInstance(document.getElementById('confirm-modal')).hide();
+    } finally {
+      btn.disabled = false;
+      spinner.classList.add('d-none');
+      text.textContent = 'Simpan';
+    }
+  });
+
+  loadDetail();
+</script>
+</body>
+</html>
+
