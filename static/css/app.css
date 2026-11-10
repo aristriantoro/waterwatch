@@ -1,0 +1,31 @@
+/* static/css/app.css – Override Bootstrap + komponen WaterWatch */
+@import url('tokens.css');
+
+/* Import Plus Jakarta Sans */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* Reset & base */
+body {
+  font-family: var(--ww-font-family);
+  background-color: var(--ww-bg);
+  color: var(--ww-text-primary);
+}
+
+/* Bootstrap primary override */
+.btn-primary { background-color: var(--ww-primary); border-color: var(--ww-primary); }
+.btn-primary:hover, .btn-primary:focus { background-color: var(--ww-primary-hover); border-color: var(--ww-primary-hover); }
+.btn-outline-primary { color: var(--ww-primary); border-color: var(--ww-primary); }
+.btn-outline-primary:hover { background-color: var(--ww-primary); }
+.form-control:focus, .form-select:focus {
+  border-color: var(--ww-primary);
+  box-shadow: 0 0 0 0.2rem rgba(3,105,161,0.15);
+}
+a { color: var(--ww-primary); }
+a:hover { color: var(--ww-primary-hover); }
+
+/* Touch targets */
+.btn, .form-control, .form-select, .nav-link { min-height: 44px; }
+
+/* Pastikan file input juga memiliki tinggi yang cukup */
+input[type="file"] { min-height: 44px; padding: 0.5rem; }
+

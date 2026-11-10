@@ -1,0 +1,60 @@
+[package]
+name = "waterwatch"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "waterwatch"
+path = "src/main.rs"
+
+[[bin]]
+name = "seed"
+path = "src/bin/seed.rs"
+
+[dependencies]
+# Web framework
+axum = { version = "0.7", features = ["multipart", "macros"] }
+tokio = { version = "1", features = ["full"] }
+tower = { version = "0.4" }
+tower-http = { version = "0.5", features = [
+    "cors", "trace", "compression-gzip", "fs", "set-header"
+] }
+tower_governor = "0.3"
+
+# Database
+sqlx = { version = "0.7", features = [
+    "runtime-tokio-rustls", "postgres", "uuid", "chrono", "macros"
+] }
+
+# Auth
+jsonwebtoken = "9"
+argon2 = "0.5"
+rand = "0.8"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Validation
+validator = { version = "0.18", features = ["derive"] }
+
+# File type detection (magic bytes)
+infer = "0.15"
+
+# Utils
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+envy = "0.4"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+anyhow = "1"
+thiserror = "1"
+bytes = "1"
+tokio-util = { version = "0.7", features = ["io"] }
+
+[dev-dependencies]
+reqwest = { version = "0.12", features = ["json", "multipart"] }
+tokio = { version = "1", features = ["full"] }
+once_cell = "1"
+

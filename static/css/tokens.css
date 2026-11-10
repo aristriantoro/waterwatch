@@ -1,0 +1,424 @@
+/* ============================================================
+   WaterWatch – Design Tokens
+   Sumber: PRD v1.0 + aturan SKILL.md (Bootstrap 5, Plus Jakarta Sans)
+   Gunakan file ini di semua halaman sebagai basis gaya.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* ── Custom Properties (Token) ───────────────────────────── */
+:root {
+  /* Brand Primary */
+  --ww-primary:          #0369A1;
+  --ww-primary-hover:    #0284C7;
+  --ww-primary-light:    #E0F2FE;
+  --ww-primary-dark:     #075985;
+
+  /* Brand Secondary */
+  --ww-secondary:        #0EA5E9;
+  --ww-secondary-light:  #BAE6FD;
+
+  /* Neutrals */
+  --ww-bg:               #F8FAFC;
+  --ww-surface:          #FFFFFF;
+  --ww-border:           #E2E8F0;
+  --ww-border-dark:      #CBD5E1;
+  --ww-text-primary:     #0F172A;
+  --ww-text-secondary:   #64748B;
+  --ww-text-disabled:    #CBD5E1;
+  --ww-text-muted:       #94A3B8;
+
+  /* Status – Menunggu (Kuning) */
+  --ww-menunggu-bg:      #FEF9C3;
+  --ww-menunggu-text:    #854D0E;
+  --ww-menunggu-border:  #FDE047;
+  --ww-menunggu-icon:    #CA8A04;
+
+  /* Status – Diproses (Biru) */
+  --ww-diproses-bg:      #DBEAFE;
+  --ww-diproses-text:    #1E40AF;
+  --ww-diproses-border:  #93C5FD;
+  --ww-diproses-icon:    #2563EB;
+
+  /* Status – Selesai (Hijau) */
+  --ww-selesai-bg:       #DCFCE7;
+  --ww-selesai-text:     #166534;
+  --ww-selesai-border:   #86EFAC;
+  --ww-selesai-icon:     #16A34A;
+
+  /* Feedback */
+  --ww-success:          #16A34A;
+  --ww-warning:          #D97706;
+  --ww-danger:           #DC2626;
+  --ww-info:             #0369A1;
+
+  /* Layout */
+  --ww-sidebar-width:    256px;
+  --ww-topbar-height:    64px;
+  --ww-bottom-nav-height: 60px;
+
+  /* Border Radius */
+  --ww-radius-xs:        2px;
+  --ww-radius-sm:        4px;
+  --ww-radius-md:        8px;
+  --ww-radius-lg:        12px;
+  --ww-radius-xl:        16px;
+  --ww-radius-pill:      999px;
+
+  /* Shadow */
+  --ww-shadow-xs:  0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --ww-shadow-sm:  0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+  --ww-shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.08);
+  --ww-shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+
+  /* Typography */
+  --ww-font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --ww-font-size-xs:   0.75rem;    /* 12px */
+  --ww-font-size-sm:   0.875rem;   /* 14px */
+  --ww-font-size-base: 1rem;       /* 16px */
+  --ww-font-size-lg:   1.125rem;   /* 18px */
+  --ww-font-size-xl:   1.25rem;    /* 20px */
+  --ww-font-size-2xl:  1.5rem;     /* 24px */
+  --ww-font-size-3xl:  2rem;       /* 32px */
+
+  /* Spacing */
+  --ww-space-1: 0.25rem;
+  --ww-space-2: 0.5rem;
+  --ww-space-3: 0.75rem;
+  --ww-space-4: 1rem;
+  --ww-space-5: 1.25rem;
+  --ww-space-6: 1.5rem;
+  --ww-space-8: 2rem;
+  --ww-space-10: 2.5rem;
+  --ww-space-12: 3rem;
+}
+
+/* ── Base Reset & Typography ─────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--ww-font-family);
+  font-size: var(--ww-font-size-base);
+  color: var(--ww-text-primary);
+  background-color: var(--ww-bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Bootstrap Overrides ─────────────────────────────────── */
+.btn-primary {
+  background-color: var(--ww-primary);
+  border-color: var(--ww-primary);
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--ww-primary-hover);
+  border-color: var(--ww-primary-hover);
+}
+.btn-outline-primary {
+  color: var(--ww-primary);
+  border-color: var(--ww-primary);
+}
+.btn-outline-primary:hover {
+  background-color: var(--ww-primary);
+  border-color: var(--ww-primary);
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--ww-primary);
+  box-shadow: 0 0 0 0.2rem rgba(3, 105, 161, 0.15);
+}
+a { color: var(--ww-primary); }
+a:hover { color: var(--ww-primary-hover); }
+
+/* ── Status Badges ───────────────────────────────────────── */
+.ww-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--ww-radius-pill);
+  font-size: var(--ww-font-size-sm);
+  font-weight: 500;
+  border: 1px solid;
+  line-height: 1;
+  white-space: nowrap;
+}
+.ww-badge .material-symbols-outlined {
+  font-size: 0.9375rem;
+  font-variation-settings: 'FILL' 1;
+}
+
+.ww-badge-menunggu {
+  background: var(--ww-menunggu-bg);
+  color: var(--ww-menunggu-text);
+  border-color: var(--ww-menunggu-border);
+}
+.ww-badge-diproses {
+  background: var(--ww-diproses-bg);
+  color: var(--ww-diproses-text);
+  border-color: var(--ww-diproses-border);
+}
+.ww-badge-selesai {
+  background: var(--ww-selesai-bg);
+  color: var(--ww-selesai-text);
+  border-color: var(--ww-selesai-border);
+}
+
+/* ── Footer ──────────────────────────────────────────────── */
+.ww-footer {
+  background-color: var(--ww-surface);
+  border-top: 1px solid var(--ww-border);
+  padding: 1.5rem 1rem;
+  color: var(--ww-text-secondary);
+  font-size: var(--ww-font-size-sm);
+}
+
+.ww-footer-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.ww-footer-logos img {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Footer logo: vertikal di layar kecil */
+@media (max-width: 576px) {
+  .ww-footer-logos {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+/* ── Bottom Nav (Mobile Warga) ───────────────────────────── */
+.ww-bottom-nav {
+  height: var(--ww-bottom-nav-height);
+  background-color: var(--ww-surface);
+  border-top: 1px solid var(--ww-border) !important;
+  box-shadow: 0 -1px 4px rgb(0 0 0 / 0.06);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.ww-nav-item {
+  min-width: 56px;
+  min-height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0.25rem 0.5rem;
+  color: var(--ww-text-secondary);
+  text-decoration: none;
+  font-size: var(--ww-font-size-xs);
+  font-weight: 500;
+  border-radius: var(--ww-radius-sm);
+  transition: color 0.15s;
+}
+.ww-nav-item:hover, .ww-nav-item.active {
+  color: var(--ww-primary);
+}
+.ww-nav-item .material-symbols-outlined {
+  font-size: 1.375rem;
+}
+
+/* ── Sidebar (Desktop Admin) ─────────────────────────────── */
+.ww-sidebar {
+  width: var(--ww-sidebar-width);
+  min-height: 100vh;
+  background-color: var(--ww-surface);
+  border-right: 1px solid var(--ww-border);
+  box-shadow: var(--ww-shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+.ww-sidebar-brand {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--ww-border);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--ww-primary);
+}
+
+.ww-sidebar-nav {
+  flex: 1;
+  padding: 0.75rem 0.75rem;
+  overflow-y: auto;
+}
+
+.ww-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  color: var(--ww-text-secondary);
+  text-decoration: none;
+  border-radius: var(--ww-radius-md);
+  font-size: var(--ww-font-size-sm);
+  font-weight: 500;
+  min-height: 44px;
+  transition: background-color 0.15s, color 0.15s;
+}
+.ww-sidebar-link:hover {
+  background-color: var(--ww-primary-light);
+  color: var(--ww-primary);
+}
+.ww-sidebar-link.active {
+  background-color: var(--ww-primary-light);
+  color: var(--ww-primary);
+  font-weight: 600;
+}
+.ww-sidebar-link .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+/* Konten kanan sidebar */
+.ww-main-with-sidebar {
+  margin-left: var(--ww-sidebar-width);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+@media (max-width: 767.98px) {
+  .ww-sidebar { display: none; }
+  .ww-main-with-sidebar { margin-left: 0; }
+}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.ww-card {
+  background: var(--ww-surface);
+  border: 1px solid var(--ww-border);
+  border-radius: var(--ww-radius-lg);
+  box-shadow: var(--ww-shadow-sm);
+  padding: var(--ww-space-4);
+}
+
+.ww-stat-card {
+  background: var(--ww-surface);
+  border: 1px solid var(--ww-border);
+  border-radius: var(--ww-radius-lg);
+  box-shadow: var(--ww-shadow-sm);
+  padding: var(--ww-space-5);
+  text-align: center;
+}
+.ww-stat-card .ww-stat-value {
+  font-size: var(--ww-font-size-3xl);
+  font-weight: 700;
+  color: var(--ww-primary);
+  line-height: 1;
+}
+.ww-stat-card .ww-stat-label {
+  font-size: var(--ww-font-size-sm);
+  color: var(--ww-text-secondary);
+  margin-top: 0.25rem;
+}
+
+/* ── Report Card (Mobile) ────────────────────────────────── */
+.ww-report-card {
+  background: var(--ww-surface);
+  border: 1px solid var(--ww-border);
+  border-radius: var(--ww-radius-lg);
+  padding: var(--ww-space-4);
+  margin-bottom: var(--ww-space-3);
+  box-shadow: var(--ww-shadow-xs);
+  transition: box-shadow 0.15s;
+}
+.ww-report-card:hover {
+  box-shadow: var(--ww-shadow-md);
+}
+.ww-report-card-title {
+  font-size: var(--ww-font-size-sm);
+  font-weight: 600;
+  color: var(--ww-text-primary);
+  margin-bottom: 0.25rem;
+}
+.ww-report-card-meta {
+  font-size: var(--ww-font-size-xs);
+  color: var(--ww-text-secondary);
+}
+
+/* ── Timeline (Riwayat Status) ───────────────────────────── */
+.ww-timeline {
+  position: relative;
+  padding-left: 1.5rem;
+}
+.ww-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  background: var(--ww-border);
+}
+.ww-timeline-item {
+  position: relative;
+  padding-bottom: 1.25rem;
+}
+.ww-timeline-item:last-child {
+  padding-bottom: 0;
+}
+.ww-timeline-dot {
+  position: absolute;
+  left: -1.25rem;
+  top: 0.25rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ww-primary);
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px var(--ww-primary);
+}
+.ww-timeline-content {
+  font-size: var(--ww-font-size-sm);
+}
+.ww-timeline-time {
+  font-size: var(--ww-font-size-xs);
+  color: var(--ww-text-secondary);
+}
+
+/* ── Utilities ───────────────────────────────────────────── */
+.ww-text-primary   { color: var(--ww-primary) !important; }
+.ww-text-secondary { color: var(--ww-text-secondary) !important; }
+.ww-bg-primary     { background-color: var(--ww-primary) !important; }
+.ww-bg-light       { background-color: var(--ww-bg) !important; }
+.ww-border         { border-color: var(--ww-border) !important; }
+
+/* Touch targets */
+.btn, .form-control, .form-select, .nav-link, .ww-nav-item {
+  min-height: 44px;
+}
+
+/* Loading skeleton animation */
+.ww-skeleton {
+  background: linear-gradient(90deg, #E2E8F0 25%, #CBD5E1 50%, #E2E8F0 75%);
+  background-size: 200% 100%;
+  animation: ww-shimmer 1.5s infinite;
+  border-radius: var(--ww-radius-sm);
+}
+@keyframes ww-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+/* Body padding saat bottom nav aktif */
+@media (max-width: 767.98px) {
+  body.has-bottom-nav {
+    padding-bottom: calc(var(--ww-bottom-nav-height) + env(safe-area-inset-bottom, 0));
+  }
+}
+

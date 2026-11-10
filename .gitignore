@@ -1,0 +1,26 @@
+# Git ignore untuk WaterWatch
+
+# File rahasia – JANGAN pernah di-commit
+.env
+
+# Folder upload foto (data runtime)
+uploads/
+
+# Build artifacts Rust (di mesin lokal jika ada)
+target/
+Cargo.lock
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+
+# Docker volumes (jika mount lokal)
+postgres_data/
+
