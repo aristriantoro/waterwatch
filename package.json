@@ -1,0 +1,9 @@
+{
+  "name": "waterwatch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontend Web Pelaporan & Monitoring Air Bersih Provinsi Lampung",
+  "scripts": {
+    "build": "node build.js"
+  }
+}

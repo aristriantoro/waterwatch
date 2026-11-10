@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Deploying static frontend'",
+  "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false,
   "headers": [
@@ -15,14 +15,6 @@
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://BACKEND_URL_PLACEHOLDER/api/$1" },
-    { "source": "/health", "destination": "https://BACKEND_URL_PLACEHOLDER/health" },
-    { "source": "/static/(.*)", "destination": "/static/$1" },
-    { "source": "/warga/(.*)", "destination": "/static/warga/$1" },
-    { "source": "/admin/(.*)", "destination": "/static/admin/$1" },
-    { "source": "/login", "destination": "/static/login.html" },
-    { "source": "/register", "destination": "/static/register.html" },
-    { "source": "/login.html", "destination": "/static/login.html" },
-    { "source": "/register.html", "destination": "/static/register.html" },
-    { "source": "/", "destination": "/static/index.html" }
+    { "source": "/health", "destination": "https://BACKEND_URL_PLACEHOLDER/health" }
   ]
 }

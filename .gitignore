@@ -6,9 +6,11 @@
 # Folder upload foto (data runtime)
 uploads/
 
-# Build artifacts Rust (di mesin lokal jika ada)
+# Build artifacts Rust & Vercel
 target/
 Cargo.lock
+public/
+
 
 # Logs
 *.log
