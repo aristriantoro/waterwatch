@@ -1,7 +1,7 @@
 // static/js/api.js – Fetch wrapper dengan token header
 
-// Mendukung proxy rewrite Vercel (/api/v1) atau custom backend domain
-const API_BASE = window.WATERWATCH_API_BASE || '/api/v1';
+// Mendukung proxy rewrite Vercel (/api/v1), environment variable, atau custom backend domain
+const API_BASE = window.WATERWATCH_API_BASE || localStorage.getItem('ww_api_url') || '/api/v1';
 
 function getToken() { return localStorage.getItem('ww_token'); }
 function setToken(t) { localStorage.setItem('ww_token', t); }
